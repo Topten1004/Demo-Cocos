@@ -9,16 +9,20 @@ export default class Helloworld extends cc.Component {
     @property
     text: string = 'hello aaaa';
 
-    @property(cc.Sprite)
+    // logoNode: cc.Node;
     logo: cc.Sprite = null;
 
     spin: cc.Node;
     constructor() {
       super();
+      // this.logoNode = new cc.Node;
+      this.logo = new cc.Sprite();
     }
 
-    start() {     
-        this.LoadImage();
+    start() {  
+      this.setImage();
+//        this.LoadImage();
+//        this.onLoadSpine();
     }
 
     onLoad() {
@@ -26,16 +30,61 @@ export default class Helloworld extends cc.Component {
       // this.onLoadSpine();
     }
 
+    setImage() {
+      var self = this;
+      cc.resources.load('btnImage/bgSelectBall', cc.SpriteFrame, function (err, spriteFrame) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        spriteFrame.addRef();
+
+        var logoNode = new cc.Node();
+        logoNode.addComponent(cc.Sprite);
+        logoNode.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        self.node.addChild(logoNode);
+          
+          // self.logo.spriteFrame = spriteFrame;
+          // console.log(self.label.node.getPosition);
+          // self.logo.node.position = new cc.Vec3(0,0,0);    
+          // self.node.addChild(self.logo.node);
+      });
+    }
+
+    // setImage() {
+    //   var self = this;
+    //   cc.resources.load('btnImage/bgSelectBall', cc.SpriteFrame, function (err, spriteFrame) {
+    //     if (err) {
+    //       console.error(err);
+    //       return;
+    //     }
+    //     spriteFrame.addRef();
+    //     if (self.logo) {
+    //       self.logoNode.addComponent(cc.Sprite);
+    //       self.logoNode.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+    //       self.node.addChild(self.logoNode);
+
+    //       // self.logo.spriteFrame = spriteFrame;
+    //       // console.log(self.label.node.getPosition);
+    //       // self.logo.node.position = new cc.Vec3(0,0,0);    
+    //       // self.node.addChild(self.logo.node);
+    //     } else {
+    //       console.error("Logo object is null or undefined");
+    //     }
+    //   });
+    // }
+
     hideImage() {
       this.logo.node.active = false;
     }
 
+    
     LoadImage() {
 
       var self = this;
       cc.resources.load("btnImage/bgSelectBall", cc.SpriteFrame, function (err, spriteFrame) {
         self.logo.spriteFrame = spriteFrame;
-      });
+    });
 
 
       // var self = this;
