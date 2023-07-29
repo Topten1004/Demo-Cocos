@@ -20,7 +20,9 @@ export default class Helloworld extends cc.Component {
     }
 
     start() {  
-      this.setImage();
+      this.setImageToButton("btnImage/bgSelectBall");
+//      this.setButtonImage();
+//      this.setImage();
 //        this.LoadImage();
 //        this.onLoadSpine();
     }
@@ -40,8 +42,8 @@ export default class Helloworld extends cc.Component {
         spriteFrame.addRef();
 
         var logoNode = new cc.Node();
-        logoNode.addComponent(cc.Sprite);
-        logoNode.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        const logoSprite = logoNode.addComponent(cc.Sprite);
+        logoSprite.spriteFrame = spriteFrame;
         self.node.addChild(logoNode);
           
           // self.logo.spriteFrame = spriteFrame;
@@ -78,13 +80,30 @@ export default class Helloworld extends cc.Component {
       this.logo.node.active = false;
     }
 
-    
+    setImageToButton(imagePath: string) {
+      var self = this;
+      cc.resources.load(imagePath, cc.SpriteFrame, (err, spriteFrame: cc.SpriteFrame) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        spriteFrame.addRef();
+
+        const buttonNode = new cc.Node(); // Replace "ButtonNode" with the actual name or path of your button node
+        buttonNode.addComponent(cc.Button);
+        buttonNode.getComponent(cc.Button).normalSprite = spriteFrame;
+
+        self.node.addChild(buttonNode);
+      });
+    }
+
     LoadImage() {
 
       var self = this;
       cc.resources.load("btnImage/bgSelectBall", cc.SpriteFrame, function (err, spriteFrame) {
         self.logo.spriteFrame = spriteFrame;
     });
+
 
 
       // var self = this;
@@ -102,25 +121,49 @@ export default class Helloworld extends cc.Component {
       // });
     }
 
-    setButtonImage() {
-         // Load the texture using the asset manager
+    // setButtonImage() {
+    //   var self = this;
 
-         const position = new cc.Vec2(0, 0); // Replace this with the desired position
-
-         // Example usage:
-         const buttonNode = new cc.Node('Button');
-         const button = buttonNode.addComponent(cc.Button);
+    //      // Example usage:
+    //      const buttonNode = new cc.Node('Button');
+    //      const button = buttonNode.addComponent(cc.Button);  
    
-         this.node.addChild(buttonNode);
-   
-         const imagePath = 'btnImage/bgSelectBall.png'; // Replace this with the actual image path
-         // Create a sprite frame using the image path
-         cc.resources.load(imagePath, cc.SpriteFrame, function (err, spriteFrame) {
-           button.normalSprite = spriteFrame;
-           buttonNode.setPosition(position);
-         });
-    }
+    //      // Create a sprite frame using the image path
+    //      cc.resources.load('btnImage/bgSelectBall', cc.SpriteFrame, function (err, spriteFrame) {
+    //       if (err) {
+    //         console.error(err);
+    //         return;
+    //       }
+    //       spriteFrame.addRef();
+    //       button.normalSprite = spriteFrame;
+    //       buttonNode.setPosition(new cc.Vec3(0,0,0));
+    //       self.node.addChild(buttonNode);
+    //     });
+    // }
 
+    // setButtonImage() {
+    //   var self = this;
+    
+    //   // Example usage:
+    //   const buttonNode = new cc.Node('Button');
+    //   const button = buttonNode.addComponent(cc.Button);
+    
+    //   // Create a sprite frame using the image path
+    //   cc.resources.load('btnImage/bgSelectBall', cc.SpriteFrame, (err, spriteFrame) => {
+    //     if (err) {
+    //       console.error(err);
+    //       return;
+    //     }
+    //     spriteFrame.addRef();
+    //     button.normalSprite = spriteFrame;
+    //     button.hoverSprite = spriteFrame;
+    //     button.pressedSprite = spriteFrame;
+
+    //     buttonNode.setPosition(new cc.Vec3(0, 0, 0));
+    //     self.node.addChild(buttonNode);
+    //   });
+    // }
+    
     TimeCallFuncDefine() {
         setTimeout(() => {
           this.onChangeText();
