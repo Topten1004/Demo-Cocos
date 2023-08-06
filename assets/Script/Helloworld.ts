@@ -32,6 +32,7 @@ export default class Helloworld extends cc.Component {
       // this.onLoadSpine();
     }
 
+
     setImage() {
       var self = this;
       cc.resources.load('btnImage/bgSelectBall', cc.SpriteFrame, function (err, spriteFrame) {
@@ -81,20 +82,25 @@ export default class Helloworld extends cc.Component {
     }
 
     setImageToButton(imagePath: string) {
-      var self = this;
-      cc.resources.load(imagePath, cc.SpriteFrame, (err, spriteFrame: cc.SpriteFrame) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        spriteFrame.addRef();
+// Create a button node
+        const buttonNode = new cc.Node("DynamicButton");
+        this.node.addChild(buttonNode);
 
-        const buttonNode = new cc.Node(); // Replace "ButtonNode" with the actual name or path of your button node
-        buttonNode.addComponent(cc.Button);
-        buttonNode.getComponent(cc.Button).normalSprite = spriteFrame;
+        // Add a button component to the button node
+        const buttonComponent = buttonNode.addComponent(cc.Button);
+        buttonComponent.transition = cc.Button.Transition.SCALE;
 
-        self.node.addChild(buttonNode);
+
+        // Add a sprite component to the button node to display the image
+        const spriteComponent = buttonNode.addComponent(cc.Sprite);
+
+        cc.resources.load("btnImage/bgSelectBall", cc.SpriteFrame, function (err, spriteFrame) {
+          spriteComponent.spriteFrame = spriteFrame;
       });
+
+        // Optionally, you can set the position, size, and other properties of the buttonNode
+        // buttonNode.setPosition(cc.v2(100, 100));
+        // buttonNode.setContentSize(cc.size(200, 100));
     }
 
     LoadImage() {
