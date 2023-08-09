@@ -11,18 +11,24 @@ export default class Helloworld extends cc.Component {
 
     // logoNode: cc.Node;
     logo: cc.Sprite = null;
-
+   
     spin: cc.Node;
+
+    static imageList: { name: string; spriteFrame: cc.SpriteFrame }[] = [];
+
     constructor() {
       super();
       // this.logoNode = new cc.Node;
       this.logo = new cc.Sprite();
+
+      this.loadAssetsList();
     }
 
     start() {  
-      this.setImageToButton("btnImage/bgSelectBall");
+//      this.setImageToButton("btnImage/bgSelectBall");
 //      this.setButtonImage();
 //      this.setImage();
+      this.setImagewithStatic();
 //        this.LoadImage();
 //        this.onLoadSpine();
     }
@@ -32,6 +38,33 @@ export default class Helloworld extends cc.Component {
       // this.onLoadSpine();
     }
 
+    loadAssetsList() {
+
+      cc.loader.loadResDir("images", cc.SpriteFrame, (err, spriteFrames) => {
+        if (err) {
+            cc.error("Error loading images:", err);
+            return;
+        }
+
+        // Store images along with their file names
+        Helloworld.imageList = spriteFrames.map((spriteFrame) => {
+            return { name: spriteFrame.name, spriteFrame };
+        });
+
+        cc.log("Images loaded and stored in static variable");
+      });
+    }
+
+    setImagewithStatic() {
+      var self = this;
+      const imageName = "1";
+      const loadedImage = Helloworld.imageList.find((image) => image.name === imageName);
+
+      var logoNode = new cc.Node();
+      const logoSprite = logoNode.addComponent(cc.Sprite);
+      logoSprite.spriteFrame = loadedImage.spriteFrame;;
+      self.node.addChild(logoNode);
+    }
 
     setImage() {
       var self = this;
